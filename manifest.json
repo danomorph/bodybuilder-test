@@ -1,0 +1,10 @@
+{
+  "name": "Bodybuilder",
+  "short_name": "Bodybuilder",
+  "description": "Personal bodybuilding logging tool",
+  "start_url": ".",
+  "display": "standalone",
+  "background_color": "#0E1210",
+  "theme_color": "#0E1210",
+  "orientation": "portrait-primary"
+}
