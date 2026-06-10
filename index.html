@@ -1293,6 +1293,10 @@
           <div style="font-family:var(--fc);font-size:13px;font-weight:600;color:var(--red);">Everything</div>
           <div style="font-family:var(--fc);font-size:11px;color:var(--td);margin-top:2px;">Wipes all data. Clean slate. Exports logs backup first.</div>
         </div>
+        <div onclick="closeSheet('resetConfirmOv');setTimeout(openImportData,250);" style="border:2px solid var(--border);border-radius:9px;padding:12px 14px;cursor:pointer;margin-top:4px;">
+          <div style="font-family:var(--fc);font-size:13px;font-weight:600;color:var(--tp);">Import from backup</div>
+          <div style="font-family:var(--fc);font-size:11px;color:var(--td);margin-top:2px;">Replace all data with a Bodybuilder export file.</div>
+        </div>
       </div>
       <div style="font-family:var(--fc);font-size:12px;color:var(--ts);line-height:1.6;margin-bottom:10px;">Type <strong>RESET</strong> to confirm.</div>
       <input class="field-input" id="resetConfirmInput" type="text" placeholder="Type RESET to confirm" oninput="resetCheckInput()" style="font-size:16px;border-color:var(--red-b);">
@@ -1300,6 +1304,26 @@
     <div class="sheet-footer" id="resetConfirmFooter">
       <button class="btn-danger" id="resetConfirmBtn" onclick="executeReset()" disabled style="opacity:.35;pointer-events:none;">SELECT TYPE ABOVE</button>
       <button class="btn-secondary" onclick="closeSheet('resetConfirmOv')">Cancel</button>
+    </div>
+  </div></div>
+
+  <!-- Import Data overlay -->
+  <div class="sheet-ov" id="importDataOv"><div class="sheet" id="importDataSheet">
+    <div class="t-hdl"></div>
+    <div class="sheet-hdr"><div class="sheet-hdr-l"><div class="sheet-eyebrow" style="color:var(--red);">DANGER ZONE</div><div class="sheet-title">IMPORT DATA</div><div class="sheet-sub">Replaces all app data with an exported backup. This cannot be undone.</div></div><button class="btn-sheet-close" onclick="closeSheet('importDataOv')">✕</button></div>
+    <div class="sheet-body" id="importDataBody">
+      <div style="font-family:var(--fc);font-size:12px;color:var(--ts);line-height:1.7;margin-bottom:16px;">Select a Bodybuilder export JSON file. All existing data — logs, foods, recipes, workouts, exercises, targets and gym setup — will be replaced.</div>
+      <div id="importFileWrap" style="border:2px dashed var(--red-b);border-radius:9px;padding:20px 16px;text-align:center;cursor:pointer;margin-bottom:16px;" onclick="document.getElementById('importFileInput').click()">
+        <div style="font-family:var(--fc);font-size:13px;font-weight:600;color:var(--red);margin-bottom:4px;">TAP TO SELECT FILE</div>
+        <div style="font-family:var(--fc);font-size:11px;color:var(--td);" id="importFileName">No file selected</div>
+      </div>
+      <input type="file" id="importFileInput" accept=".json" style="display:none;" onchange="importFileSelected(this)">
+      <div style="font-family:var(--fc);font-size:12px;color:var(--ts);line-height:1.6;margin-bottom:10px;">Type <strong>IMPORT</strong> to confirm.</div>
+      <input class="field-input" id="importConfirmInput" type="text" placeholder="Type IMPORT to confirm" oninput="importCheckInput()" style="font-size:16px;border-color:var(--red-b);">
+    </div>
+    <div class="sheet-footer">
+      <button class="btn-danger" id="importConfirmBtn" onclick="executeImport()" disabled style="opacity:.35;pointer-events:none;">SELECT FILE ABOVE</button>
+      <button class="btn-secondary" onclick="closeSheet('importDataOv')">Cancel</button>
     </div>
   </div></div>
 
@@ -3372,6 +3396,134 @@ async function executeReset() {
   setTimeout(() => { showToast(msgs[type]||'Reset ✓'); homeRender(); }, 400);
 }
 
+
+let _importData = null;
+
+function openImportData() {
+  _importData = null;
+  const inp = document.getElementById('importConfirmInput');
+  if (inp) inp.value = '';
+  const btn = document.getElementById('importConfirmBtn');
+  if (btn) { btn.disabled = true; btn.style.opacity = '.35'; btn.style.pointerEvents = 'none'; btn.textContent = 'SELECT FILE ABOVE'; }
+  const fn = document.getElementById('importFileName');
+  if (fn) fn.textContent = 'No file selected';
+  const fi = document.getElementById('importFileInput');
+  if (fi) fi.value = '';
+  _baseOpenSheet('importDataOv');
+}
+
+function importFileSelected(input) {
+  const file = input.files[0];
+  if (!file) return;
+  const fn = document.getElementById('importFileName');
+  if (fn) fn.textContent = file.name;
+  const reader = new FileReader();
+  reader.onload = e => {
+    try {
+      const data = JSON.parse(e.target.result);
+      if (!data.exportedAt || !data.dayLogs) {
+        showToast('Invalid export file');
+        _importData = null;
+        if (fn) fn.textContent = 'Invalid file — try another';
+        return;
+      }
+      _importData = data;
+      importCheckInput();
+    } catch(err) {
+      showToast('Could not read file');
+      _importData = null;
+    }
+  };
+  reader.readAsText(file);
+}
+
+function importCheckInput() {
+  const val = document.getElementById('importConfirmInput')?.value || '';
+  const btn = document.getElementById('importConfirmBtn');
+  if (!btn) return;
+  const ok = val === 'IMPORT' && !!_importData;
+  btn.disabled = !ok;
+  btn.style.opacity = ok ? '1' : '.35';
+  btn.style.pointerEvents = ok ? '' : 'none';
+  if (_importData && val !== 'IMPORT') btn.textContent = 'TYPE IMPORT TO CONFIRM';
+  else if (!_importData) btn.textContent = 'SELECT FILE ABOVE';
+  else btn.textContent = 'IMPORT DATA';
+}
+
+async function executeImport() {
+  if (!_importData) return;
+  const d = _importData;
+  closeSheet('importDataOv');
+  showToast('Importing…');
+
+  try {
+    // Targets
+    if (d.targets) {
+      targets = d.targets;
+      await Store.set(SK.userPrefs, { targets, algorithmMode: 'efficient' });
+    }
+    // Exercises
+    if (d.exercises) {
+      DB.exercises = d.exercises;
+      await Store.set(SK.exercises, DB.exercises);
+    }
+    // Workouts
+    if (d.workouts) {
+      DB.workouts = d.workouts;
+      await Store.set(SK.workouts, DB.workouts);
+    }
+    // Gym setup
+    if (d.gymSetup) {
+      if (d.gymSetup.equipment) DB.equipment = d.gymSetup.equipment;
+      if (d.gymSetup.plateInventory) DB.plateInventory = d.gymSetup.plateInventory;
+      await Store.set(SK.gymSetup, { equipment: DB.equipment, plateInventory: DB.plateInventory });
+    }
+    // Foods
+    if (d.foods) {
+      DB.foods = d.foods;
+      const userFoods = d.foods.filter(f => !SEED.foods.some(s => s.id === f.id));
+      await Store.set(SK.userFoods, userFoods);
+    }
+    // Recipes
+    if (d.recipes) {
+      DB.recipes = d.recipes;
+      const userRecipes = d.recipes.filter(r => !SEED.recipes.some(s => s.id === r.id));
+      await Store.set(SK.userRecipes, userRecipes);
+    }
+    // Day logs
+    if (d.dayLogs) {
+      const days = Object.keys(d.dayLogs);
+      for (const day of days) {
+        await Store.set(SK.dayLog(day), d.dayLogs[day]);
+      }
+      await Store.set(SK.metaDays, days);
+    }
+    // Lift history
+    if (d.liftHistory) {
+      for (const [exId, val] of Object.entries(d.liftHistory)) {
+        await Store.set(SK.liftHistory(exId), val.sessions || val);
+      }
+    }
+    // Lift sessions
+    if (d.liftSessions) {
+      for (const [woId, val] of Object.entries(d.liftSessions)) {
+        await Store.set(SK.liftSessions(woId), val.sessions || val);
+      }
+    }
+    // Reload today's log into dayState
+    const todayLog = await Store.get(SK.dayLog(todayKey()));
+    if (todayLog) {
+      dayState = todayLog;
+    } else {
+      dayState = {hydration:0,meals:[],lifts:[],rest:{naps:[],morning:null,evening:null},mindset:[],body:{measurements:[]},note:null,closedAt:null,dayTargets:null,startedAt:null};
+    }
+    _importData = null;
+    setTimeout(() => { showToast('Import complete ✓'); homeRender(); }, 400);
+  } catch(err) {
+    showToast('Import failed — check file');
+    console.error('Import error:', err);
+  }
+}
 
 function openTargetsSheet() {
   // Ad hoc — today only. Pre-fill with active targets but saves to dayState.dayTargets
