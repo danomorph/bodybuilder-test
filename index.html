@@ -690,7 +690,7 @@
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="display:flex;align-items:baseline;gap:8px;">
           <div class="wordmark">BODY<span>BUILDER</span></div>
-          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.1</span>
+          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.2</span>
         </div>
         <button onclick="openDevNotes()" title="Dev notes" style="background:none;border:1px solid var(--i600);border-radius:5px;padding:3px 6px;cursor:pointer;display:flex;align-items:center;gap:3px;line-height:1;" id="devNotesBadge">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--i400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -3563,6 +3563,7 @@ function savePermanentTargets() {
   if(p>0)targets.protein=p; if(c>0)targets.calories=c; if(h>0)targets.hydration=h; if(b)targets.bedtime=b;
   // Clear any day override so permanent is visible immediately
   dayState.dayTargets=null;
+  saveUserPrefs();
   homeRender(); closeSheet('targetsOv'); showToast('Targets saved permanently');
 }
 
@@ -4471,6 +4472,21 @@ function liftRenderAll() {
   if (!LS) return;
   const ex = LS.exercises[LS.exIdx];
 
+  // Scroll guard — suppress clicks that fire within 120ms of scroll end (touch drift fix)
+  const scrollEl = document.querySelector('.lift-scroll');
+  if (scrollEl && !scrollEl._guardAttached) {
+    scrollEl._guardAttached = true;
+    let _scrolling = false, _scrollTimer = null;
+    scrollEl.addEventListener('scroll', () => {
+      _scrolling = true;
+      clearTimeout(_scrollTimer);
+      _scrollTimer = setTimeout(() => { _scrolling = false; }, 120);
+    }, { passive: true });
+    scrollEl.addEventListener('click', e => {
+      if (_scrolling) { e.stopPropagation(); e.preventDefault(); }
+    }, true);
+  }
+
   document.getElementById('liftExName').textContent = ex.name;
   document.getElementById('liftExMeta').textContent = ex.muscles.length
     ? ex.muscles.join(' · ') : `${LS.workoutName} · ${LS.exIdx+1}/${LS.exercises.length}`;
@@ -4736,6 +4752,7 @@ function liftSkipSet(idx) {
   ex.skipped[idx]=true;
   const next=ex.sets.findIndex((s,i)=>i>idx&&ex.logged[i]===null&&!ex.skipped[i]);
   ex.activeSetIdx = next!==-1 ? next : -1;
+  savePartial(LS);
   liftRenderSets();
   liftRenderPicker();
 }
@@ -4790,6 +4807,7 @@ function liftLogSet(idx) {
       }
     }
   }
+  savePartial(LS);
   liftRenderSets();
   liftRenderPicker();
 }
@@ -6309,7 +6327,7 @@ window.applyUpdate = function() {
   <div style="text-align:center;padding-top:8px;">
     <div style="display:inline-flex;align-items:baseline;gap:8px;">
       <div class="wordmark">BODY<span>BUILDER</span></div>
-      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.1</span>
+      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.2</span>
     </div>
     <div style="font-family:var(--fc);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--td);margin-top:4px;" id="repeatDate"></div>
   </div>
