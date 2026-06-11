@@ -3545,6 +3545,7 @@ function saveAdHocTargets() {
     calories:  c>0 ? c : targets.calories,
     hydration: h>0 ? h : targets.hydration,
   };
+  saveDayLog();
   homeRender(); closeSheet('targetsOv'); showToast('Targets set for today');
 }
 
