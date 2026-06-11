@@ -3562,9 +3562,10 @@ function openPermanentTargetsSheet() {
 function savePermanentTargets() {
   const p=parseInt(document.getElementById('tProt')?.value), c=parseInt(document.getElementById('tCals')?.value), h=parseFloat(document.getElementById('tHyd')?.value), b=document.getElementById('tBed')?.value;
   if(p>0)targets.protein=p; if(c>0)targets.calories=c; if(h>0)targets.hydration=h; if(b)targets.bedtime=b;
-  // Clear any day override so permanent is visible immediately
+  // Clear any day override so permanent targets apply to today and persist correctly
   dayState.dayTargets=null;
   saveUserPrefs();
+  saveDayLog();
   homeRender(); closeSheet('targetsOv'); showToast('Targets saved permanently');
 }
 
