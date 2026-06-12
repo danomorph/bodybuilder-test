@@ -1,4 +1,4 @@
-const CACHE = 'bodybuilder-v1.08';
+const CACHE = 'bodybuilder-v1.4';
 
 // Install: just take over immediately — no pre-caching (avoids serving stale CDN content)
 self.addEventListener('install', e => {
