@@ -690,7 +690,7 @@
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="display:flex;align-items:baseline;gap:8px;">
           <div class="wordmark">BODY<span>BUILDER</span></div>
-          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.3</span>
+          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.4</span>
         </div>
         <button onclick="openDevNotes()" title="Dev notes" style="background:none;border:1px solid var(--i600);border-radius:5px;padding:3px 6px;cursor:pointer;display:flex;align-items:center;gap:3px;line-height:1;" id="devNotesBadge">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--i400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -1553,7 +1553,17 @@ async function saveExercises()    { await Store.set(SK.exercises, DB.exercises);
 async function saveWorkouts()     { await Store.set(SK.workouts, DB.workouts); }
 async function saveGymSetup()     { await Store.set(SK.gymSetup, {equipment: DB.equipment, plateInventory: DB.plateInventory}); }
 async function saveUserPrefs()    { await Store.set(SK.userPrefs, {targets, algorithmMode: LS?.algorithmMode || 'efficient'}); }
-async function saveDayLog()       { await Store.set(SK.dayLog(todayKey()), dayState); }
+async function saveDayLog()       { await Store.set(SK.dayLog(todayKey()), dayState); await ensureDayTracked(todayKey()); }
+let _metaDaysTrackedFor = null;
+async function ensureDayTracked(key) {
+  if (_metaDaysTrackedFor === key) return;
+  const days = (await Store.get(SK.metaDays)) || [];
+  if (!days.includes(key)) {
+    days.push(key);
+    await Store.set(SK.metaDays, days);
+  }
+  _metaDaysTrackedFor = key;
+}
 async function saveConditions()   { await Store.set(SK.conditions, healthConditions); }
 let healthConditions = [];
 async function saveUserFoods()    { await Store.set(SK.userFoods,   DB.foods.filter(f => !SEED.foods.some(s => s.id === f.id))); }
@@ -6333,7 +6343,7 @@ window.applyUpdate = function() {
   <div style="text-align:center;padding-top:8px;">
     <div style="display:inline-flex;align-items:baseline;gap:8px;">
       <div class="wordmark">BODY<span>BUILDER</span></div>
-      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.3</span>
+      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.4</span>
     </div>
     <div style="font-family:var(--fc);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--td);margin-top:4px;" id="repeatDate"></div>
   </div>
