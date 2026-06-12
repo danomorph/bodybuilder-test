@@ -690,7 +690,7 @@
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="display:flex;align-items:baseline;gap:8px;">
           <div class="wordmark">BODY<span>BUILDER</span></div>
-          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.2</span>
+          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.3</span>
         </div>
         <button onclick="openDevNotes()" title="Dev notes" style="background:none;border:1px solid var(--i600);border-radius:5px;padding:3px 6px;cursor:pointer;display:flex;align-items:center;gap:3px;line-height:1;" id="devNotesBadge">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--i400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -2886,7 +2886,7 @@ function bodyRemove(idx) {
   saveDayLog(); homeRender(); bodyRender();
   showToast('Measurement removed');
 }
-function saveNote() { dayState.note=document.getElementById('noteInput')?.value||null; homeRender(); closeSheet('noteOv'); }
+function saveNote() { dayState.note=document.getElementById('noteInput')?.value||null; saveDayLog(); homeRender(); closeSheet('noteOv'); }
 
 function openClosedaySheet() {
   if (dayState.closedAt) { _baseOpenSheet('closedayOv'); closedayRender(); return; }
@@ -3381,14 +3381,16 @@ async function executeReset() {
   }
 
   if (type === 'settings' || type === 'all') {
-    // Wipe workouts, exercises, gym setup, user prefs
-    for (const k of [SK.exercises, SK.workouts, SK.gymSetup, SK.userPrefs]) {
+    // Wipe workouts, exercises, gym setup, user prefs, custom foods/recipes (meal reference)
+    for (const k of [SK.exercises, SK.workouts, SK.gymSetup, SK.userPrefs, SK.userFoods, SK.userRecipes]) {
       try { await Store.remove(k); } catch(e) {}
     }
     DB.exercises = [...SEED.exercises];
     DB.workouts  = [...SEED.workouts];
     DB.equipment = {...SEED.equipment};
     DB.plateInventory = [...SEED.plateInventory];
+    DB.foods   = [...SEED.foods];
+    DB.recipes = [...SEED.recipes];
     targets = {protein:150,calories:2400,hydration:2.5,bedtime:'22:30'};
   }
 
@@ -5220,7 +5222,10 @@ function setYesterdayStress(n) {
   yesterdayEveningLogged = true;
   const yk = yesterdayKey();
   Store.get(SK.dayLog(yk)).then(yLog => {
-    if (!yLog) return;
+    if (!yLog) {
+      // No log exists for yesterday (e.g. rest day, app not opened) — create a minimal one
+      yLog = {hydration:0,meals:[],lifts:[],rest:{naps:[],morning:null,evening:null},mindset:[],body:{measurements:[]},note:null,closedAt:null,dayTargets:null,startedAt:null};
+    }
     if (!yLog.rest) yLog.rest = {naps:[],morning:null,evening:null};
     if (!yLog.rest.evening) yLog.rest.evening = {};
     yLog.rest.evening.stress = n;
@@ -5474,7 +5479,7 @@ function liftSaveCues(){
   const ex=LS.exercises[LS.exIdx];
   const cleaned=_cueEditorCues.map(c=>c.trim()).filter(Boolean);
   ex.cues=[...cleaned];
-  if(_cueEditorExId){const dbEx=DB.exercises.find(x=>x.id===_cueEditorExId);if(dbEx)dbEx.cues=[...cleaned];}
+  if(_cueEditorExId){const dbEx=DB.exercises.find(x=>x.id===_cueEditorExId);if(dbEx){dbEx.cues=[...cleaned];saveExercises();}}
   closeSheet('cueEditorOv');
   liftRenderAll();
   showToast('Cues saved ✓');
@@ -5544,7 +5549,6 @@ async function lr_openWoView(woId) {
   const days = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
   const months = ['Jan','Feb','Mar','Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec'];
   const fmtDate = d => { const dt = new Date(d + 'T12:00:00'); return `${days[dt.getDay()]} ${dt.getDate()} ${months[dt.getMonth()]} ${dt.getFullYear()}`; };
-  const fmtTime = iso => iso ? iso.slice(11,16) : '';
   const fmtDur = (start, end) => {
     if (!start || !end) return '';
     const mins = Math.round((new Date(end) - new Date(start)) / 60000);
@@ -6329,7 +6333,7 @@ window.applyUpdate = function() {
   <div style="text-align:center;padding-top:8px;">
     <div style="display:inline-flex;align-items:baseline;gap:8px;">
       <div class="wordmark">BODY<span>BUILDER</span></div>
-      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.2</span>
+      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.3</span>
     </div>
     <div style="font-family:var(--fc);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--td);margin-top:4px;" id="repeatDate"></div>
   </div>
