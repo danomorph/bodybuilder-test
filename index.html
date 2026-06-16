@@ -393,6 +393,33 @@
     .field-sec-lbl{font-family:var(--fc);font-size:8px;font-weight:600;letter-spacing:2.5px;text-transform:uppercase;color:var(--td);padding:6px 0 8px;border-top:1px solid var(--i700);margin-bottom:2px;}
     .field-note{font-family:var(--fc);font-size:10px;color:var(--td);line-height:1.5;margin-bottom:14px;padding:8px 10px;background:var(--i700);border-radius:6px;}
     .field-note span{color:var(--o500);}
+    .scl-sec-lbl{font-family:var(--fc);font-size:9px;font-weight:600;letter-spacing:3px;text-transform:uppercase;color:var(--td);margin-bottom:8px;}
+    .scale-default-row{display:flex;align-items:center;justify-content:space-between;background:var(--i700);border:1px solid var(--i600);border-radius:8px;padding:9px 12px;margin-bottom:14px;}
+    .scale-default-l{font-family:var(--fc);font-size:11px;color:var(--ts);}
+    .scale-default-l b{color:var(--tp);font-weight:600;}
+    .scale-default-offset{color:var(--o300);font-weight:600;}
+    .scale-link{font-family:var(--fc);font-size:11px;font-weight:600;letter-spacing:.5px;color:var(--o400);cursor:pointer;white-space:nowrap;}
+    .scale-row{display:flex;justify-content:space-between;align-items:center;cursor:pointer;background:var(--surface);border:1px solid var(--border);border-radius:10px;padding:13px 14px;margin-bottom:10px;}
+    .scale-name{font-family:var(--fc);font-size:15px;font-weight:600;color:var(--tp);}
+    .scale-meta{font-family:var(--fc);font-size:10px;color:var(--tm);margin-top:2px;}
+    .scale-active-dot{width:6px;height:6px;border-radius:50%;background:var(--o400);display:inline-block;margin-right:6px;}
+    .scale-offset{font-family:var(--fd);font-size:20px;color:var(--o300);text-align:right;}
+    .scale-offset.zero{color:var(--tm);}
+    .three-col{display:grid;grid-template-columns:1.4fr 1fr 1fr;gap:8px;margin-bottom:16px;}
+    .three-col .field-group{margin-bottom:0;}
+    .cal-point-wrap{position:relative;overflow:hidden;border-radius:8px;margin-bottom:8px;}
+    .cal-point-reveal{position:absolute;right:0;top:0;bottom:0;display:flex;border-radius:0 8px 8px 0;overflow:hidden;}
+    .cal-point-del-btn{width:84px;background:var(--red-d);border:none;color:var(--red);font-family:var(--fc);font-size:10px;font-weight:700;letter-spacing:1px;cursor:pointer;transition:background .15s;}
+    .cal-point{display:flex;align-items:center;gap:10px;background:var(--i700);border:1px solid var(--i600);border-radius:8px;padding:11px 12px;position:relative;z-index:1;will-change:transform;touch-action:pan-y;}
+    .cal-point-col{flex:1;min-width:0;}
+    .cal-point-lbl{font-family:var(--fc);font-size:8px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--td);margin-bottom:3px;}
+    .cal-point-val{font-family:var(--fc);font-size:13px;font-weight:600;color:var(--ts);}
+    .offset-preview{background:var(--o900);border:1px solid var(--o700);border-radius:8px;padding:10px 12px;margin:6px 0 16px;display:flex;justify-content:space-between;align-items:center;}
+    .offset-preview-lbl{font-family:var(--fc);font-size:10px;font-weight:600;letter-spacing:1.5px;text-transform:uppercase;color:var(--o400);}
+    .offset-preview-val{font-family:var(--fd);font-size:22px;color:var(--o200);}
+    .scl-empty{font-family:var(--fc);font-size:11px;color:var(--td);text-align:center;padding:18px 0;}
+    .btn-text{background:none;border:none;color:var(--o400);font-family:var(--fc);font-size:11px;font-weight:600;letter-spacing:1px;text-transform:uppercase;cursor:pointer;padding:4px 0;}
+    .bm-scale-note{font-family:var(--fc);font-size:10px;color:var(--tm);margin-top:5px;}
     .unit-chips{display:flex;gap:5px;flex-wrap:wrap;margin-bottom:14px;}
     .unit-chip{font-family:var(--fc);font-size:10px;font-weight:600;letter-spacing:.5px;padding:5px 10px;border-radius:10px;border:1px solid var(--border);color:var(--td);background:none;cursor:pointer;transition:all .15s;}
     .unit-chip.sel{background:var(--i700);border-color:var(--i500);color:var(--tp);}
@@ -690,7 +717,7 @@
       <div style="display:flex;align-items:center;gap:10px;">
         <div style="display:flex;align-items:baseline;gap:8px;">
           <div class="wordmark">BODY<span>BUILDER</span></div>
-          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.4</span>
+          <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.4);">v1.7</span>
         </div>
         <button onclick="openDevNotes()" title="Dev notes" style="background:none;border:1px solid var(--i600);border-radius:5px;padding:3px 6px;cursor:pointer;display:flex;align-items:center;gap:3px;line-height:1;" id="devNotesBadge">
           <svg width="11" height="11" viewBox="0 0 24 24" fill="none" stroke="var(--i400)" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"/><path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"/></svg>
@@ -1132,6 +1159,13 @@
     <div class="sheet-footer" id="bodyFooter"></div>
   </div></div>
 
+  <!-- Scales (stacks above Body) -->
+  <div class="sheet-ov" id="scalesOv" style="z-index:85;"><div class="sheet" id="scalesSheet" style="z-index:86;max-height:94vh;">
+    <div class="sheet-hdr"><div class="sheet-hdr-l"><div class="sheet-eyebrow">Be · Body</div><div class="sheet-title" id="scalesTitle">SCALES</div></div><button class="btn-sheet-close" onclick="closeSheet('scalesOv')">✕</button></div>
+    <div class="sheet-body" id="scalesSheetBody"></div>
+    <div class="sheet-footer" id="scalesFooter"></div>
+  </div></div>
+
   <!-- Note -->
   <div class="sheet-ov" id="noteOv"><div class="sheet" id="noteSheet">
     <div class="t-hdl"></div>
@@ -1219,7 +1253,7 @@
     <div class="sheet-hdr"><div class="sheet-hdr-l"><div class="sheet-eyebrow">Settings</div><div class="sheet-title">IMPORT DATA</div></div><button class="btn-sheet-close" onclick="closeSheet('importOv')">✕</button></div>
     <div class="sheet-body" id="importOvBody"></div>
     <div class="sheet-footer" id="importOvFooter"></div>
-    <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importFileSelected(this)">
+    <input type="file" id="importFileInput" accept=".json" style="display:none" onchange="importRefFileSelected(this)">
   </div></div>
 
   <!-- Lift Reference — Exercise sheet -->
@@ -1495,7 +1529,7 @@ const SEED = {
 // SHARED DATABASE — loaded from storage on init
 // ══════════════════════════════════════════════════
 let DB = {
-  foods: [], recipes: [], exercises: [], equipment: {}, plateInventory: [], workouts: [],
+  foods: [], recipes: [], exercises: [], equipment: {}, plateInventory: [], workouts: [], scales: [],
 };
 
 // ══════════════════════════════════════════════════
@@ -1534,6 +1568,7 @@ const SK = {
   conditions:   'health:conditions',       // array of injury/niggle records
   userFoods:    'user:foods',              // user-added foods (merged with SEED)
   userRecipes:  'user:recipes',            // user-added recipes (merged with SEED)
+  scales:       'user:scales',             // body fat scale calibration profiles
 };
 
 function todayKey() {
@@ -1552,6 +1587,7 @@ function yesterdayKey() {
 async function saveExercises()    { await Store.set(SK.exercises, DB.exercises); }
 async function saveWorkouts()     { await Store.set(SK.workouts, DB.workouts); }
 async function saveGymSetup()     { await Store.set(SK.gymSetup, {equipment: DB.equipment, plateInventory: DB.plateInventory}); }
+async function saveScales()       { await Store.set(SK.scales, DB.scales); }
 async function saveUserPrefs()    { await Store.set(SK.userPrefs, {targets, algorithmMode: LS?.algorithmMode || 'efficient'}); }
 async function saveDayLog()       { await Store.set(SK.dayLog(todayKey()), dayState); await ensureDayTracked(todayKey()); }
 let _metaDaysTrackedFor = null;
@@ -1611,6 +1647,7 @@ async function initStorage() {
   const gym       = (await Store.get(SK.gymSetup))   || {};
   DB.equipment    = gym.equipment    || SEED.equipment;
   DB.plateInventory = gym.plateInventory || SEED.plateInventory;
+  DB.scales       = (await Store.get(SK.scales)) || [];
   // Foods & recipes: SEED as base, merge user-added items on top
   const userFoods   = (await Store.get(SK.userFoods))   || [];
   const userRecipes = (await Store.get(SK.userRecipes)) || [];
@@ -2011,6 +2048,42 @@ function fmtDate(iso) {
   return d.toLocaleDateString('en-GB', {day:'numeric', month:'short', year:'numeric'});
 }
 
+function _persistRecoveryScore() {
+  // Compute and persist the recovery score + individual components to dayState.rest
+  // so the export includes full recovery data without needing separate storage keys.
+  const m = dayState.rest.morning;
+  if (!m || !m.sleepQuality || !m.readiness || !m.soreness) {
+    dayState.rest.recoveryScore = null;
+    dayState.rest.recoveryComponents = null;
+    return;
+  }
+  let durMins = 0;
+  let durScore = 0;
+  if (m.sleepStart && m.sleepEnd) {
+    const [sh, sm] = m.sleepStart.split(':').map(Number);
+    const [eh, em] = m.sleepEnd.split(':').map(Number);
+    durMins = (eh * 60 + em) - (sh * 60 + sm);
+    if (durMins < 0) durMins += 24 * 60;
+    durScore = Math.min((durMins / 60) / 8 * 10, 10);
+  }
+  const stress = yesterdayStress;
+  const score =
+    m.sleepQuality * 0.30 +
+    m.readiness    * 0.25 +
+    (11 - m.soreness) * 0.20 +
+    (11 - stress)     * 0.15 +
+    durScore           * 0.10;
+  dayState.rest.recoveryScore = Math.round(score * 10) / 10;
+  dayState.rest.recoveryComponents = {
+    sleepQuality:   m.sleepQuality,
+    readiness:      m.readiness,
+    soreness:       m.soreness,
+    stressYesterday: stress,
+    sleepDurationMins: durMins,
+    sleepDurationScore: Math.round(durScore * 10) / 10,
+  };
+}
+
 function computeRecoveryScore() {
   const m = dayState.rest.morning;
   if (!m) return null;
@@ -2221,6 +2294,7 @@ function restSaveMorning() {
   if (!ss && !se && !sq && !rd && !so && !nt) { showToast('Add at least one value'); return; }
   dayState.rest.morning = { sleepStart:ss, sleepEnd:se, sleepQuality:sq, readiness:rd, soreness:so, notes:nt, loggedAt:nowISO() };
   _restScaleVals['sq'] = _restScaleVals['rd'] = _restScaleVals['so'] = null;
+  _persistRecoveryScore();
   saveDayLog(); homeRender(); recoveryOvRender();
   closeSheet('morningOv');
   showToast('Morning logged ✓');
@@ -2233,6 +2307,7 @@ function restSaveEvening() {
   dayState.rest.evening = { stress:st, notes:nt, loggedAt:nowISO() };
   restState.showEveningForm = false;
   _restScaleVals['st'] = null;
+  _persistRecoveryScore();
   saveDayLog(); homeRender(); restRender();
   showToast('Evening logged ✓');
 }
@@ -2802,10 +2877,13 @@ function openBodySheet() {
 function bodyRender() {
   const meas = dayState.body.measurements || [];
   const now = nowTime();
+  const def = (DB.scales || []).find(s => s.active) || null;
+  const defOffset = def ? computeOffset(def) : 0;
 
   const listHTML = meas.length === 0 ? '' : [...meas].reverse().map((m, ri) => {
     const i = meas.length - 1 - ri;
     const lean = (m.weight && m.bodyFat) ? (m.weight*(1-m.bodyFat/100)).toFixed(1) : null;
+    const usedScale = m.scaleId ? (DB.scales || []).find(s => s.id === m.scaleId) : null;
     return `<div style="position:relative;overflow:hidden;margin-bottom:8px;border-radius:8px;" id="bm-${i}">
       <div style="position:absolute;right:0;top:0;bottom:0;display:flex;border-radius:0 8px 8px 0;overflow:hidden;">
         <button onclick="bodyEdit(${i})" style="width:68px;background:var(--i600);border:none;color:var(--tm);font-family:var(--fc);font-size:9px;font-weight:700;letter-spacing:1px;cursor:pointer;">✎<br>EDIT</button>
@@ -2820,6 +2898,7 @@ function bodyRender() {
           <span style="font-family:var(--fc);font-size:11px;color:var(--td);">${fmtTime(m.loggedAt)}</span>
         </div>
         ${lean ? `<div style="font-family:var(--fc);font-size:11px;color:var(--o400);letter-spacing:.5px;">${lean}kg lean mass</div>` : ''}
+        ${(m.bodyFat && m.rawBodyFat !== undefined) ? `<div class="bm-scale-note">${usedScale ? usedScale.name : 'No scale set'} · raw ${m.rawBodyFat}% ${fmtOffset(m.offsetApplied||0)}% · frozen at log time</div>` : ''}
       </div>
     </div>`;
   }).join('');
@@ -2829,6 +2908,10 @@ function bodyRender() {
     <div class="two-col" style="margin-bottom:10px;">
       <div class="field-group"><div class="field-lbl">Weight (kg)</div><input class="field-input center" id="bWeight" type="number" step="0.1" placeholder="0.0" style="font-size:16px;"></div>
       <div class="field-group"><div class="field-lbl">Body fat %</div><input class="field-input center" id="bFat" type="number" step="0.1" placeholder="—" style="font-size:16px;"></div>
+    </div>
+    <div class="scale-default-row">
+      <div class="scale-default-l">${def ? `<b>${def.name}</b> · <span class="scale-default-offset">${fmtOffset(defOffset)}%</span> offset` : 'No default scale set'}</div>
+      <span class="scale-link" onclick="openScalesTray()">Scales →</span>
     </div>
     <div class="field-group"><div class="field-lbl">Time</div><input class="field-input center" id="bTime" type="time" value="${now}" style="font-size:16px;"></div>
   </div>`;
@@ -2860,13 +2943,22 @@ function bodyRender() {
 
 function saveBody() {
   const w = parseFloat(document.getElementById('bWeight')?.value);
-  const bf = parseFloat(document.getElementById('bFat')?.value);
+  const bfRaw = parseFloat(document.getElementById('bFat')?.value);
   const t = document.getElementById('bTime')?.value || nowTime();
   if (isNaN(w) || w <= 0) { showToast('Enter a weight'); return; }
+
+  let bodyFat = null, rawBodyFat = null, scaleId = null, offsetApplied = 0;
+  if (!isNaN(bfRaw) && bfRaw > 0) {
+    rawBodyFat = bfRaw;
+    const def = (DB.scales || []).find(s => s.active) || null;
+    if (def) { offsetApplied = computeOffset(def); scaleId = def.id; }
+    bodyFat = Math.round((rawBodyFat + offsetApplied) * 10) / 10;
+  }
+
   const today = new Date().toISOString().slice(0,10);
   const loggedAt = `${today}T${t}:00`;
   if (!dayState.body.measurements) dayState.body.measurements = [];
-  dayState.body.measurements.push({ weight: w, bodyFat: (!isNaN(bf) && bf > 0) ? bf : null, loggedAt });
+  dayState.body.measurements.push({ weight: w, bodyFat, rawBodyFat, scaleId, offsetApplied, loggedAt });
   dayState.body.measurements.sort((a,b) => new Date(a.loggedAt) - new Date(b.loggedAt));
   saveDayLog(); homeRender(); bodyRender();
   showToast('Measurement logged ✓');
@@ -2880,7 +2972,7 @@ function bodyRemove(i) {
 function bodyEdit(i) {
   const m = dayState.body.measurements[i];
   const w = m.weight;
-  const bf = m.bodyFat;
+  const bf = (m.rawBodyFat !== undefined && m.rawBodyFat !== null) ? m.rawBodyFat : m.bodyFat;
   const t = m.loggedAt ? m.loggedAt.slice(11,16) : nowTime();
   dayState.body.measurements.splice(i, 1);
   saveDayLog();
@@ -2890,6 +2982,198 @@ function bodyEdit(i) {
   document.getElementById('bTime').value = t;
   showToast('Edit the fields and re-save');
 }
+
+// ══════════════════════════════════════════════════
+// SCALE CALIBRATION
+// ══════════════════════════════════════════════════
+let scalesView = 'list';     // 'list' | 'form'
+let editingScaleId = null;   // null/'NEW' = new scale, else id of scale being edited
+let draftCalPoints = [];
+let calDeleteArmed = false;
+let calDeleteTimer = null;
+
+function computeOffset(scale) {
+  if (!scale || !scale.calibrationPoints || scale.calibrationPoints.length === 0) return 0;
+  const diffs = scale.calibrationPoints.map(p => p.dexaReading - p.scaleReading);
+  return Math.round((diffs.reduce((a,b) => a+b, 0) / diffs.length) * 10) / 10;
+}
+function fmtOffset(o) { return (o === 0 ? '0.0' : (o > 0 ? '+' : '') + o.toFixed(1)); }
+
+function openScalesTray() {
+  scalesView = 'list'; editingScaleId = null;
+  renderScalesTray();
+  _baseOpenSheet('scalesOv');
+}
+
+function renderScalesTray() {
+  if (scalesView === 'form') { renderScaleForm(); return; }
+
+  document.getElementById('scalesTitle').textContent = 'SCALES';
+  let html = '<div class="scl-sec-lbl">Your Scales</div>';
+  if ((DB.scales || []).length === 0) {
+    html += '<div class="scl-empty">No scales added yet</div>';
+  } else {
+    DB.scales.forEach(s => {
+      const offset = computeOffset(s);
+      html += `<div class="scale-row" onclick="openScaleEdit('${s.id}')">
+        <div>
+          <div class="scale-name">${s.active ? '<span class="scale-active-dot"></span>' : ''}${s.name}</div>
+          <div class="scale-meta">${s.calibrationPoints.length ? '1 calibration point' : 'No calibration point'}${s.active ? ' · default' : ''}</div>
+        </div>
+        <div class="scale-offset ${offset===0?'zero':''}">${fmtOffset(offset)}<span style="font-size:11px;">%</span></div>
+      </div>`;
+    });
+  }
+  document.getElementById('scalesSheetBody').innerHTML = html + `<div class="field-note">Offset = DEXA reading − scale reading, from that scale's calibration point. The default scale is what gets applied automatically when you log body fat on the Body card.</div>`;
+  document.getElementById('scalesFooter').innerHTML = `<button class="btn-secondary" onclick="addNewScale()">+ Add Scale</button>`;
+}
+
+function addNewScale() { editingScaleId='NEW'; draftCalPoints=[]; scalesView='form'; renderScaleForm(); }
+
+function openScaleEdit(id) {
+  editingScaleId = id;
+  draftCalPoints = JSON.parse(JSON.stringify(DB.scales.find(s=>s.id===id).calibrationPoints));
+  scalesView = 'form';
+  renderScaleForm();
+}
+
+function renderScaleForm() {
+  const isNew = editingScaleId === 'NEW';
+  const scale = isNew ? null : DB.scales.find(s=>s.id===editingScaleId);
+  document.getElementById('scalesTitle').textContent = isNew ? 'NEW SCALE' : 'EDIT SCALE';
+  const tempOffset = computeOffset({calibrationPoints: draftCalPoints});
+
+  let calHTML = draftCalPoints.map((p,i) => `<div class="cal-point-wrap" id="calWrap-${i}">
+      <div class="cal-point-reveal"><button class="cal-point-del-btn" id="calDelBtn-${i}" onclick="calPointDeleteTap(${i})">DELETE</button></div>
+      <div class="cal-point cal-point-inner">
+        <div class="cal-point-col"><div class="cal-point-lbl">Date</div><div class="cal-point-val">${p.date}</div></div>
+        <div class="cal-point-col"><div class="cal-point-lbl">Scale</div><div class="cal-point-val">${p.scaleReading}%</div></div>
+        <div class="cal-point-col"><div class="cal-point-lbl">DEXA</div><div class="cal-point-val">${p.dexaReading}%</div></div>
+      </div>
+    </div>`).join('');
+  if (draftCalPoints.length === 0) calHTML = '<div class="scl-empty">No calibration point yet</div>';
+
+  const inputRowHTML = draftCalPoints.length === 0 ? `
+    <div class="three-col" style="margin-top:8px;">
+      <div class="field-group"><div class="field-lbl">Date</div><input class="field-input" id="cpDate" type="date" style="font-size:16px;padding:10px 9px;"></div>
+      <div class="field-group"><div class="field-lbl">Scale %</div><input class="field-input center" id="cpScale" type="number" step="0.1" placeholder="0.0" style="font-size:16px;padding:10px 9px;"></div>
+      <div class="field-group"><div class="field-lbl">DEXA %</div><input class="field-input center" id="cpDexa" type="number" step="0.1" placeholder="0.0" style="font-size:16px;padding:10px 9px;"></div>
+    </div>
+    <button class="btn-text" style="margin-top:4px;" onclick="addCalPoint()">+ Add calibration point</button>
+  ` : `<div class="field-note" style="margin-top:8px;">One calibration point per scale for now — swipe left and confirm to delete the existing one, then add a fresh DEXA-day reading.</div>`;
+
+  document.getElementById('scalesSheetBody').innerHTML = `
+    <div class="field-group">
+      <div class="field-lbl">Name</div>
+      <input class="field-input" id="scName" type="text" placeholder="e.g. Bathroom Scale" value="${scale?scale.name:''}" style="font-size:16px;">
+    </div>
+    <div class="scl-sec-lbl" style="margin-top:16px;">Calibration Point</div>
+    ${calHTML}
+    ${inputRowHTML}
+    <div class="offset-preview"><div class="offset-preview-lbl">Derived Offset</div><div class="offset-preview-val">${fmtOffset(tempOffset)}%</div></div>
+    <div class="field-group" style="display:flex;align-items:center;gap:8px;">
+      <input type="checkbox" id="scActive" ${scale&&scale.active?'checked':''} style="width:16px;height:16px;">
+      <label for="scActive" class="field-lbl" style="margin:0;">Set as default scale for logging</label>
+    </div>
+    ${!isNew ? `<button class="btn-text" style="color:var(--red);" onclick="deleteScale('${scale.id}')">Delete scale</button>` : ''}
+  `;
+  document.getElementById('scalesFooter').innerHTML = `<button class="btn-primary" onclick="saveScale(${isNew})">SAVE SCALE</button><button class="btn-secondary" onclick="cancelScaleEdit()">Back</button>`;
+  attachCalSwipe();
+}
+
+function attachCalSwipe() {
+  document.querySelectorAll('.cal-point-inner').forEach(el => {
+    let sx, sy, dx = 0, revealed = false;
+    const revealW = 84;
+    el.addEventListener('touchstart', e => { sx=e.touches[0].clientX; sy=e.touches[0].clientY; dx=0; }, {passive:true});
+    el.addEventListener('touchmove', e => {
+      dx = e.touches[0].clientX - sx;
+      const dy = Math.abs(e.touches[0].clientY - sy);
+      if (dy > Math.abs(dx)) return;
+      if (dx < 0) { el.style.transform=`translateX(${Math.max(dx,-revealW)}px)`; el.style.transition='none'; }
+      else if (revealed) { el.style.transform=`translateX(${Math.min(dx-revealW,0)}px)`; el.style.transition='none'; }
+    }, {passive:true});
+    el.addEventListener('touchend', () => {
+      el.style.transition = 'transform .25s ease';
+      if (!revealed && dx < -50) { el.style.transform=`translateX(-${revealW}px)`; revealed=true; }
+      else if (revealed && dx > 50) { el.style.transform='translateX(0)'; revealed=false; calDeleteReset(); }
+      else { el.style.transform = revealed ? `translateX(-${revealW}px)` : 'translateX(0)'; }
+    });
+  });
+}
+
+function calPointDeleteTap(i) {
+  const btn = document.getElementById('calDelBtn-'+i);
+  if (!btn) return;
+  if (!calDeleteArmed) {
+    calDeleteArmed = true;
+    btn.textContent = 'CONFIRM?';
+    btn.style.background = 'var(--red-b)';
+    clearTimeout(calDeleteTimer);
+    calDeleteTimer = setTimeout(calDeleteReset, 3000);
+  } else {
+    clearTimeout(calDeleteTimer);
+    calDeleteArmed = false;
+    draftCalPoints.splice(i,1);
+    showToast('Calibration point deleted');
+    renderScaleForm();
+  }
+}
+
+function calDeleteReset() {
+  calDeleteArmed = false;
+  clearTimeout(calDeleteTimer);
+  document.querySelectorAll('.cal-point-del-btn').forEach(btn => {
+    btn.textContent = 'DELETE';
+    btn.style.background = 'var(--red-d)';
+  });
+}
+
+function addCalPoint() {
+  if (draftCalPoints.length >= 1) { showToast('Delete the existing calibration point first'); return; }
+  const date = document.getElementById('cpDate').value;
+  const sR = parseFloat(document.getElementById('cpScale').value);
+  const dR = parseFloat(document.getElementById('cpDexa').value);
+  if (!date || isNaN(sR) || isNaN(dR)) { showToast('Fill in date, scale %, and DEXA %'); return; }
+  draftCalPoints.push({date, scaleReading:sR, dexaReading:dR});
+  renderScaleForm();
+}
+
+function saveScale(isNew) {
+  const name = document.getElementById('scName').value.trim();
+  if (!name) { showToast('Name required'); return; }
+  if (draftCalPoints.length === 0) { showToast('Add a calibration point'); return; }
+  const makeActive = document.getElementById('scActive').checked;
+
+  if (!DB.scales) DB.scales = [];
+
+  if (isNew) {
+    const id = 'sc_' + Date.now();
+    DB.scales.push({ id, name, active: makeActive, calibrationPoints: draftCalPoints });
+    if (makeActive) DB.scales.forEach(s => { if (s.id !== id) s.active = false; });
+    showToast('Scale added ✓');
+  } else {
+    const s = DB.scales.find(x => x.id === editingScaleId);
+    s.name = name; s.calibrationPoints = draftCalPoints;
+    if (makeActive) { DB.scales.forEach(x => x.active = false); s.active = true; } else s.active = false;
+    showToast('Scale updated ✓');
+  }
+  scalesView = 'list'; editingScaleId = null;
+  saveScales();
+  renderScalesTray();
+  bodyRender(); // refresh default-scale row behind the tray
+  homeRender();
+}
+
+function deleteScale(id) {
+  DB.scales = DB.scales.filter(s => s.id !== id);
+  scalesView = 'list'; editingScaleId = null;
+  saveScales();
+  showToast('Scale removed — past entries keep their frozen values');
+  renderScalesTray(); bodyRender(); homeRender();
+}
+
+function cancelScaleEdit() { scalesView='list'; editingScaleId=null; renderScalesTray(); }
 
 function bodyRemove(idx) {
   dayState.body.measurements.splice(idx, 1);
@@ -3044,6 +3328,7 @@ async function exportData() {
     gymSetup: { equipment: DB.equipment, plateInventory: DB.plateInventory },
     foods: DB.foods,
     recipes: DB.recipes,
+    scales: DB.scales,
     dayLogs: {},
     liftHistory: {},
     liftSessions: {},
@@ -3119,7 +3404,7 @@ function importTriggerFile(type) {
   inp.click();
 }
 
-function importFileSelected(input) {
+function importRefFileSelected(input) {
   const file = input.files[0];
   if (!file) return;
   const reader = new FileReader();
@@ -3589,6 +3874,7 @@ const _baseOpenSheet = ovId => {
 function openSheet(ovId) {
   if(ovId==='mindsetOv'){openMindsetSheet();return;}
   if(ovId==='bodyOv'){openBodySheet();return;}
+  if(ovId==='scalesOv'){openScalesTray();return;}
   if(ovId==='closedayOv'){openClosedaySheet();return;}
   if(ovId==='targetsOv'){openTargetsSheet();return;}
   if(ovId==='noteOv'){const n=dayState.note||''; setTimeout(()=>{const el=document.getElementById('noteInput'); if(el)el.value=n;},50);}
@@ -6343,7 +6629,7 @@ window.applyUpdate = function() {
   <div style="text-align:center;padding-top:8px;">
     <div style="display:inline-flex;align-items:baseline;gap:8px;">
       <div class="wordmark">BODY<span>BUILDER</span></div>
-      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.4</span>
+      <span style="font-family:var(--fc);font-size:8px;letter-spacing:2px;color:rgba(255,255,255,0.45);">v1.7</span>
     </div>
     <div style="font-family:var(--fc);font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--td);margin-top:4px;" id="repeatDate"></div>
   </div>
